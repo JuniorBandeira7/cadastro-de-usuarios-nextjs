@@ -5,9 +5,9 @@ import bcrypt from 'bcryptjs'
 import prisma from "@db/db"
 
 // helpers
-const createUserToken = require('../../helpers/create-user-token')
-const getUserByToken = require('../../helpers/get-user-by-token')
-const getToken = require('../../helpers/get-token')
+const createUserToken = require('../../../helpers/create-user-token')
+const getUserByToken = require('../../../helpers/get-user-by-token')
+const getToken = require('../../../helpers/get-token')
 
 export async function POST(req: Request){
     const {email, senha} = await req.json()
