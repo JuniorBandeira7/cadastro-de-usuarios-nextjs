@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const createUserToken = async (user, req, res) => {
+const createUserToken = async (user) => {
     const token = jwt.sign(
         {
             name: user.name,
@@ -8,12 +8,7 @@ const createUserToken = async (user, req, res) => {
         },
         "secret"
     );
-
-    res.status(200).json({
-        message: "Você está autenticado",
-        token: token,
-        userId: user.id
-    });
+    return token
 };
 
 module.exports = createUserToken;
