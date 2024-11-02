@@ -49,8 +49,8 @@ export async function DELETE(req: Request, { params }: { params: { id: string}})
         const token = getToken(req)
         const tokenUser = await getUserByToken(token)
 
-        // Verifica se o id passado é o mesmo do usuario do token
-        if(parseInt(id, 10) !== tokenUser.id){
+        // Verifica se o id passado é o mesmo do usuario do token ou se é admin
+        if(parseInt(id, 10) !== tokenUser.id && tokenUser.permissao !== true){
             return NextResponse.json(
                 {
                     message: "Acesso negado!"
@@ -90,8 +90,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string}}){
         const token = getToken(req)
         const tokenUser = await getUserByToken(token)
 
-        // Verifica se o id passado é o mesmo do usuario do token
-        if(parseInt(id, 10) !== tokenUser.id){
+        // Verifica se o id passado é o mesmo do usuario do token ou se é admin
+        if(parseInt(id, 10) !== tokenUser.id && tokenUser.permissao !== true){
             return NextResponse.json(
                 {
                     message: "Acesso negado!"
