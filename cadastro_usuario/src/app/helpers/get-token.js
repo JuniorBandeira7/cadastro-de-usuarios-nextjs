@@ -1,5 +1,5 @@
 const getToken = (req)=>{
-    const authHeader = req.headers.authorization
+    const authHeader = req.headers.get('authorization')
     const token = authHeader.split(" ")[1]
 
     return token
