@@ -45,22 +45,22 @@ export async function GET(req: Request, { params }: { params: { id: string}}){
 export async function DELETE(req: Request, { params }: { params: { id: string}}) {
     const { id } = await params;
     
-    try {
-        // Busca o token e depois busca o usuario pelo token
-        const token = getToken(req)
-        const tokenUser = await getUserByToken(token)
+    // Busca o token e depois busca o usuario pelo token
+    const token = getToken(req)
+    const tokenUser = await getUserByToken(token)
 
-        // Verifica se o id passado é o mesmo do usuario do token ou se é admin
-        if(parseInt(id, 10) !== tokenUser.id && tokenUser.permissao !== true){
-            return NextResponse.json(
-                {
-                    message: "Acesso negado!"
-                },
-                {
-                    status: 422
-                }
-            )
-        }
+    // Verifica se o id passado é o mesmo do usuario do token ou se é admin
+    if(parseInt(id, 10) !== tokenUser.id && tokenUser.permissao !== true){
+        return NextResponse.json(
+            {
+                message: "Acesso negado!"
+            },
+            {
+                status: 422
+            }
+        )
+    }
+    try {
         const user = await prisma.user.delete({
             where:{
                 id: parseInt(id, 10)
