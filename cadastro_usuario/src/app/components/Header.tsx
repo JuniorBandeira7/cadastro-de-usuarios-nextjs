@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface User {
@@ -12,21 +13,20 @@ interface User {
 
 export default function Header() {
     const [user, setUser] = useState<User | null>(null)
+    const router = useRouter()
 
     const handleLogout = () => {
-
+        localStorage.removeItem("token")
+        router.push("/login")
     }
 
     useEffect(() => {
         const fetchUsers = async () => {
             const token = localStorage.getItem("token")
-            if (!token) {
-                alert("Token não encontrado. Você precisa estar logado.")
-                return
+            if (token) {
+                const decodedToken = JSON.parse(atob(token.split('.')[1]))// Decodifica o token e pega as informações do usuario
+                setUser(decodedToken)
             }
-
-            const decodedToken = JSON.parse(atob(token.split('.')[1])) // // Decodifica o token e pega as informações do usuario
-            setUser(decodedToken)
         }
         fetchUsers()
     }, [])
@@ -39,9 +39,19 @@ export default function Header() {
                 </Link>
             </div>
             <nav className="flex items-center gap-6">
-                <Link href={`/editar?id=${user?.id}`} className="hover:text-gray-400 font-semibold">Editar</Link>
-                <Link href="/usuarios" className="hover:text-gray-400 font-semibold">Usuários</Link>
-                <button onClick={handleLogout} className="hover:text-gray-400 font-semibold focus:outline-none"> Deslogar </button>
+                {user ? ( // Resolve erro de hidratação
+                    <>
+                        <Link href={`/editar?id=${user.id}`} className="hover:text-gray-400 font-semibold">Editar</Link>
+                        <Link href="/usuarios" className="hover:text-gray-400 font-semibold">Usuários</Link>
+                        <button onClick={handleLogout} className="hover:text-gray-400 font-semibold focus:outline-none"> Deslogar </button>
+                    </>
+                ) : (
+                    <>
+                        <p className="hover:text-gray-400 font-semibold">Editar</p>
+                        <p className="hover:text-gray-400 font-semibold">Usuários</p>
+                        <button onClick={handleLogout} className="hover:text-gray-400 font-semibold focus:outline-none"> Deslogar </button>
+                    </>
+                )}
             </nav>
         </header>
     )
