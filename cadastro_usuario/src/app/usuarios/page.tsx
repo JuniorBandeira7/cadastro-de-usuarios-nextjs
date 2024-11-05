@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Button from '../components/Button'
 import Header from '../components/Header'
 
@@ -14,12 +15,13 @@ interface User {
 export default function UsuariosPage() {
   const [users, setUsers] = useState<User[]>([])
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
+  const router = useRouter()
 
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token")
       if (!token) {
-        alert("Token não encontrado. Você precisa estar logado.")
+        router.push("/login")
         return
       }
 
