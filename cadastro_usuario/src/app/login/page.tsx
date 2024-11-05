@@ -56,7 +56,7 @@ export default function LoginForm() {
         <Button onClick={handleLogin} className="mb-2">
           Entrar
         </Button>
-        <Link href="/cadastrar"><Button>Cadastrar</Button></Link>
+        <Link href="/cadastro"><Button>Cadastrar</Button></Link>
       </div>
     </div>
   );
