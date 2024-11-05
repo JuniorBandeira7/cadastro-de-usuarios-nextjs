@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 import Button from "../components/Button";
 
 export default function LoginForm() {
@@ -34,11 +35,6 @@ export default function LoginForm() {
     }
   };
 
-  const handleRegister = () => {
-    // Lógica de cadastro aqui
-    console.log("Cadastrar");
-  };
-
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col items-center justify-center bg-gray-800 p-8 rounded-lg w-96">
@@ -60,7 +56,7 @@ export default function LoginForm() {
         <Button onClick={handleLogin} className="mb-2">
           Entrar
         </Button>
-        <Button onClick={handleRegister}>Cadastrar</Button>
+        <Link href="/cadastrar"><Button>Cadastrar</Button></Link>
       </div>
     </div>
   );
