@@ -1,62 +1,40 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server"
 import bcrypt from 'bcryptjs'
-//import jwt from 'jsonwebtoken'
+import User  from "@/models/User"
+import connectToDatabase from "@db/db"
 
-import prisma from "@db/db"
+connectToDatabase()
 
 // helpers
 const createUserToken = require('../../../helpers/create-user-token')
-const getUserByToken = require('../../../helpers/get-user-by-token')
-const getToken = require('../../../helpers/get-token')
 
-export async function POST(req: Request){
-    const {email, senha} = await req.json()
+export async function POST(req: Request) {
+    const { email, senha } = await req.json()
 
     // validações
-    if(!email){
-        return NextResponse.json(
-            {
-                message: 'Digite o email'
-            },
-            {
-                status: 422
-            }
-        )
+    if (!email) {
+        return NextResponse.json({ message: 'O email é obrigatório' }, { status: 422 })
     }
-    if(!senha){
-        return NextResponse.json(
-            {
-                message: 'Digite a senha'
-            },
-            {
-                status: 422
-            }
-        )
+
+    if (!senha) {
+        return NextResponse.json({ message: 'A senha é obrigatória' }, { status: 422 })
     }
 
     // Verificar se usuario já existe
-    const user = await prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-      })
-      if(!user){
+    const user = await User.findOne({ email })
+    if (!user) {
         return NextResponse.json(
-            {
-                message: 'Email não cadastrado'
-            },
-            {
-                status: 422
-            }
+            { message: 'Email não cadastrado' },
+            { status: 422 }
         )
     }
 
     //check if password match
     const checkPassword = await bcrypt.compare(senha, user.senha)
-    if(!checkPassword){
+    if (!checkPassword) {
         return NextResponse.json(
             {
-            message: 'Senha não corresponde'
+                message: 'Senha não corresponde'
             },
             {
                 status: 422
@@ -67,6 +45,6 @@ export async function POST(req: Request){
     // Criar token
     const token = await createUserToken(user)
 
-    return Response.json({message: "ok", user, token})
+    return Response.json({ message: "ok", user, token })
 }
 

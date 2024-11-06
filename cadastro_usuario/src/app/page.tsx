@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Header from "../app/components/Header"
 
 interface User {
-  id: string
+  _id: string
   name: string
   email: string
   permissao: boolean
@@ -25,7 +25,7 @@ export default function Home() {
 
       try {
         const decodedToken = JSON.parse(atob(token.split('.')[1])) // Decodifica o token e pega as informações do usuário
-        const userId = decodedToken.id
+        const userId = decodedToken._id
 
         const userResponse = await fetch(`/api/user/${userId}`, {
           method: "GET",
@@ -55,7 +55,7 @@ export default function Home() {
       <div className="flex justify-center items-center min-h-screen">
         <div className="bg-gray-700 text-white p-8 rounded-lg shadow-lg w-full max-w-md">
           <h1 className="text-2xl font-bold mb-4">{user?.name}</h1>
-          <p><strong>Id:</strong>{user?.id}</p>
+          <p><strong>Id:</strong>{user?._id}</p>
           <p><strong>Email:</strong> {user?.email}</p>
           <p><strong>Tipo de usuário:</strong> {user?.permissao ? "Admin" : "Cliente"}</p>
         </div>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface User {
-    id: string
+    _id: string
     name: string
     email: string
     permissao: boolean
@@ -41,7 +41,7 @@ export default function Header() {
             <nav className="flex items-center gap-6">
                 {user ? ( // Resolve erro de hidratação
                     <>
-                        <Link href={`/editar?id=${user.id}`} className="hover:text-gray-400 font-semibold">Editar</Link>
+                        <Link href={`/editar?id=${user._id}`} className="hover:text-gray-400 font-semibold">Editar</Link>
                         <Link href="/usuarios" className="hover:text-gray-400 font-semibold">Usuários</Link>
                         <button onClick={handleLogout} className="hover:text-gray-400 font-semibold focus:outline-none"> Deslogar </button>
                     </>

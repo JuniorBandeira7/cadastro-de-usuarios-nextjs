@@ -29,6 +29,7 @@ export default function RegisterForm() {
                 router.push("/login")
             } else {
                 const data = await response.json()
+                alert(data.message || "Erro ao cadastrar usuário")
                 console.log(data.message || "Erro ao cadastrar usuário")
             }
         } catch (error) {

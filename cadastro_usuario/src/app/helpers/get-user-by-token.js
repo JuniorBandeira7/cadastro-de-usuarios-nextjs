@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken')
-import prisma from "@db/db"
+import User  from "@/models/User"
 
 const getUserByToken = async (token) => {
     if (!token) {
         return { status: 401, message: "Acesso Negado!" }
     }
-
+    
     try {
         const decoded = jwt.verify(token, 'secret')
-        const userId = decoded.id
+        const userId = decoded._id      
 
-        const user = await prisma.user.findUnique({
-            where: { id: userId }
-        })
+        const user = await User.findById(userId)
 
         if (!user) {
             return { status: 404, message: "Usuário não encontrado!" }

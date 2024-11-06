@@ -25,7 +25,6 @@ export default function LoginForm() {
       if (response.ok) {
         // Armazena o token no localStorage
         localStorage.setItem("token", data.token);
-        console.log(data.token);
         router.push("/"); // Redireciona para a página inicial após o login
       } else {
         console.error(data.message); // Exibe a mensagem de erro

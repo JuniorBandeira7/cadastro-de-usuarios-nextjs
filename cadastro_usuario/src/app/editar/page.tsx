@@ -12,7 +12,7 @@ export default function EditUserPage() {
   const [senha, setSenha] = useState("")
   const router = useRouter()
   const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get("id") ?? "0", 10)
+  const id = searchParams.get("id")
   const token = localStorage.getItem("token")
 
   useEffect(() => {
@@ -63,6 +63,7 @@ export default function EditUserPage() {
         console.log("Usuário atualizado com sucesso")
         router.push("/")
       } else {
+        alert(data.message)
         console.log(data.message)
       }
     } catch (error) {
@@ -82,7 +83,8 @@ export default function EditUserPage() {
       const data = await response.json()
       if (response.ok) {
         console.log("Usuário excluído com sucesso")
-        router.push("/")
+        localStorage.removeItem("token")
+        router.push("/login")
       } else {
         console.log(data.message)
       }
